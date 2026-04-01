@@ -24,28 +24,40 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
-                    python3 -m pip install --upgrade pip
-                    pip install ruff pytest coverage
-                    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+                    # Kiểm tra và cài pip nếu chưa có
+                    if ! python3 -m pip --version 2>/dev/null; then
+                        curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                        python3 get-pip.py --user
+                        rm get-pip.py
+                    fi
+                    
+                    # Upgrade pip và cài dependencies
+                    python3 -m pip install --upgrade pip --user
+                    python3 -m pip install ruff pytest coverage --user
+                    
+                    # Cài requirements.txt nếu có
+                    if [ -f requirements.txt ]; then 
+                        python3 -m pip install -r requirements.txt --user
+                    fi
                 '''
             }
         }
         
         stage('Lint with Ruff') {
             steps {
-                sh 'ruff --format=github --target-version=py310 . || true'
+                sh 'python3 -m ruff --format=github --target-version=py310 . || true'
             }
         }
         
         stage('Test with pytest') {
             steps {
-                sh 'coverage run -m pytest -v -s'
+                sh 'python3 -m coverage run -m pytest -v -s'
             }
         }
         
         stage('Generate Coverage Report') {
             steps {
-                sh 'coverage report -m'
+                sh 'python3 -m coverage report -m'
             }
         }
     }
