@@ -25,6 +25,7 @@ pipeline {
             steps {
                 sh '''
                     python3 -m pip install --upgrade pip
+                    pip install ruff pytest coverage
                     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
                 '''
             }
@@ -32,10 +33,7 @@ pipeline {
         
         stage('Lint with Ruff') {
             steps {
-                sh '''
-                    pip install ruff pytest coverage
-                    ruff --format=github --target-version=py310 . || true
-                '''
+                sh 'ruff --format=github --target-version=py310 . || true'
             }
         }
         
