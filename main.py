@@ -31,3 +31,17 @@ if __name__ == "__main__":
         print(f"Tổng: {total}, Trung bình: {average}")
     except ValueError as e:
         print(f"Lỗi: {e}")
+
+# Hàm tìm số lớn nhất trong dãy
+def find_max_number(numbers):
+    if not numbers:
+        raise ValueError("Dãy số không được rỗng.")
+    return max(numbers) + 1  # BUG: Cố ý sai để test fail
+
+# Hàm tính giai thừa
+def calculate_factorial(n):
+    if n < 0:
+        raise ValueError("Số phải không âm.")
+    if n == 0 or n == 1:
+        return 1
+    return n * calculate_factorial(n - 1)
