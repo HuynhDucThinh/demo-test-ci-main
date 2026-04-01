@@ -36,7 +36,7 @@ if __name__ == "__main__":
 def find_max_number(numbers):
     if not numbers:
         raise ValueError("Dãy số không được rỗng.")
-    return max(numbers) + 1  # BUG: Cố ý sai để test fail
+    return max(numbers)   
 
 # Hàm tính giai thừa
 def calculate_factorial(n):
